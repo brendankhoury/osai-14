@@ -6,3 +6,4 @@ llama-index-llms-openai-like
 openinference-instrumentation-llama-index>=2 
 arize-phoenix 
 python-dotenv
+pinecone
