@@ -93,21 +93,22 @@ if __name__ == "__main__":
 
 
     response = agent.chat(
-        f"Classify the following article based on its potential risk, considering factors like: "
-        f"- The possible negative impact on the company or brand reputation\n"
-        f"- Public/customer sentiment or media attention surrounding the issue\n"
-        f"- The likelihood of the issue escalating\n"
-        f"- The urgency and timeliness required to address the matter\n\n"
-        f"Please use these criteria to assess whether this article is high-risk or low-risk.\n"
-        f"You can refer to other existing articles in our files for context if necessary.\n"
-        f"Here is the article text:\n\n{article_text}\n\n"
-        f"Return a valid JSON object with the following fields: "
-        f"'classification' (either 'high-risk' or 'low-risk'). "
-        f"If the article is low-risk, return the message: {{'message': 'This is a low-risk article.'}}. "
-        f"If it is high-risk, include the following in the response: "
-        f"- 'summary' (a brief summary of the article), "
-        f"- 'reason' (the key factors or reasons why it was classified as high-risk)."
+    f"Classify the following article based on its potential risk level, considering factors like: "
+    f"- The possible negative impact on the company or brand reputation\n"
+    f"- Public/customer sentiment or media attention surrounding the issue\n"
+    f"- The likelihood of the issue escalating\n"
+    f"- The urgency and timeliness required to address the matter\n\n"
+    f"Please classify the article as 'high-risk,' 'medium-risk,' or 'low-risk'.\n"
+    f"You can refer to other existing articles in our files for context if necessary.\n"
+    f"Here is the article text:\n\n{article_text}\n\n"
+    f"Return a valid JSON object with the following fields:\n"
+    f"- 'classification' (either 'high-risk', 'medium-risk', or 'low-risk').\n"
+    f"- If the article is low-risk, return: {{'message': 'This is a low-risk article.'}}\n"
+    f"- If the article is medium-risk or high-risk, include:\n"
+    f"  - 'summary' (a brief description of the article)\n"
+    f"  - 'reason' (why it was classified as medium-risk or high-risk)\n"
     )
+
 
 
     response_text = response.response 
