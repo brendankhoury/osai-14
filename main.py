@@ -93,19 +93,22 @@ if __name__ == "__main__":
 
 
     response = agent.chat(
-    f"Classify if this article is high-risk or low-risk based on the following criteria of a high-risk article: "
-    f"- Potential Negative impact on the company or brand reputation\n"
-    f"- Public(customer) sentiment or media attention around the issue\n"
-    f"- Whether the issue is likely to escalate\n"
-    f"- How urgent/timely the matter needs to be resolved\n\n"
-    f"If necessary, you can receive context from other existing articles in our files.\n"
-    f"Here is the article text:\n\n{article_text}\n\n"
-    f"Return ONLY a valid JSON list where each object has: "
-    f"'classification' (state if this article is high risk or low risk). "
-    f"If it is not a High-Risk article, return a JSON object stating: {{'message': 'This is not a high-risk article, it is low-risk.'}} Stop there if it is low-risk. "
-    f"If it is high risk: 'summary' (brief article description), "
-    f"If it is high risk: 'reason' (why it was classified as High-Risk)."   
+        f"Classify the following article based on its potential risk, considering factors like: "
+        f"- The possible negative impact on the company or brand reputation\n"
+        f"- Public/customer sentiment or media attention surrounding the issue\n"
+        f"- The likelihood of the issue escalating\n"
+        f"- The urgency and timeliness required to address the matter\n\n"
+        f"Please use these criteria to assess whether this article is high-risk or low-risk.\n"
+        f"You can refer to other existing articles in our files for context if necessary.\n"
+        f"Here is the article text:\n\n{article_text}\n\n"
+        f"Return a valid JSON object with the following fields: "
+        f"'classification' (either 'high-risk' or 'low-risk'). "
+        f"If the article is low-risk, return the message: {{'message': 'This is a low-risk article.'}}. "
+        f"If it is high-risk, include the following in the response: "
+        f"- 'summary' (a brief summary of the article), "
+        f"- 'reason' (the key factors or reasons why it was classified as high-risk)."
     )
+
 
     response_text = response.response 
 
