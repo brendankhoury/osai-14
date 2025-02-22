@@ -17,6 +17,7 @@ from llama_index.core.tools import QueryEngineTool, ToolMetadata
 from llama_index.core.agent import ReActAgent
 from llama_index.llms.openai import OpenAI
 
+logging.basicConfig(level=logging.INFO)
 
 
 if __name__ == "__main__":
@@ -38,14 +39,43 @@ if __name__ == "__main__":
         storage_context = StorageContext.from_defaults(
             persist_dir="test_data"
         )
+        news_index = load_index_from_storage(storage_context)
+    
         logging.info("Storage context created")
         index_loaded = True
     except Exception as e:
         index_loaded = False
-
+    # index_loaded = False
     if not index_loaded:
-        sample_data = SimpleDirectoryReader(
-            input_dir="test_data",
+        news_index = SimpleDirectoryReader(
+            input_dir="pdfs",
         ).load_data()
     
+        news_index = VectorStoreIndex.from_documents(news_index)
+        news_index.storage_context.persist(persist_dir="test_data")
+
+    news_engine = news_index.as_query_engine(similarity_top_k=3,llm=llm)
     
+    # Create a query engine tool
+
+    query_engine_tools = [
+        QueryEngineTool(
+            query_engine=news_engine,
+            metadata=ToolMetadata(
+                name="news_query_engine",
+                description="A query engine for news articles",
+            ),
+        )
+    ]
+
+    agent = ReActAgent.from_tools(
+        query_engine_tools,
+        llm=llm,
+        verbose=True,
+        max_turns=10,
+    )
+    response = agent.chat("Should the IBM pr team be aware of anything immediately!")
+    logging.info(f'Response {response}')
+
+    input("Press Enter to end the program...")
+
