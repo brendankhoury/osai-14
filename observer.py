@@ -27,7 +27,7 @@ class PRMonitorAgent:
         self.storage_context = self.create_storage_context()
         self.index = self.load_or_create_index()
         query_engine = self.index.as_query_engine(similarity_top_k=3, llm=self.llm)
-        query_engine_tools = [QueryEngineTool(query_engine=query_engine, metadata=ToolMetadata(name="user_monitors", description="This tool contains the subjects that users have setup to monitor. Use a plain text query find monitors "))]
+        query_engine_tools = [QueryEngineTool(query_engine=query_engine, metadata=ToolMetadata(name="user_monitors", description="This tool contains the subjects that users have setup to monitor. Search this tool using the subject of an article to check if a user has set one up."))]
         self.agent =  ReActAgent.from_tools(
             tools=query_engine_tools,
             llm=self.llm,
@@ -52,28 +52,37 @@ class PRMonitorAgent:
             return index
         except Exception as e:
             logging.warning("No existing index found, creating a new one.")
-            return VectorStoreIndex.from_documents(["samsung note 25"])  # Start with an empty index
+            documents = [
+                "samsung note 25",
+                "iphone 13",
+                "google pixel 6",
+                "oneplus 9",
+                "xiaomi mi 11"
+            ]
+            return VectorStoreIndex.from_documents(documents)  # Start with an index containing initial documents
 
-    def add_monitor_query(self, query):
-        """Add a new monitoring query to the vector database."""
-        # self.index.insert_documents([query])
-    #     self.index.storage_context.persist(persist_dir="monitor_data")
-        logging.info(f"Added monitor query: {query}")
 
 
     def check_article(self, article_content):
         """Monitor articles from a given API URL."""
         try:
-            result = self.agent.chat(f"Look through the user monitors and check if the following article contains any information that negatively impacts the publicity and reputation of the montitors in question: {article_content}. Respond with a json object containing a risk assessment (none, critical) [{{'risk': 'str', 'reason': 'str'}}")
+            result = self.agent.chat(message=f"Look through the user monitors and check if the following article contains any information that negatively impacts the publicity and reputation of anything mentioned in the monitors tool: . Respond with a json object containing a risk assessment (none, critical) [{{'monitor': 'str', 'risk': 'str', 'reason': 'str'}}. Article: '{article_content}'")
             return result
         except Exception as e:
             logging.error(f"Error while monitoring articles: {e}")
 
 if __name__ == "__main__":
-    agent = PRMonitorAgent()
 
-    # Example: Adding a user-defined monitor query
-    agent.add_monitor_query("samsung note 25")
+    import phoenix as px
+    session = px.launch_app()
+
+    from openinference.instrumentation.llama_index import LlamaIndexInstrumentor
+    from phoenix.otel import register
+
+    tracer_provider = register()
+    LlamaIndexInstrumentor().instrument(tracer_provider=tracer_provider)
+
+    agent = PRMonitorAgent()
 
     # Example: Monitor articles from a hypothetical API
     agent.check_article("New Samsung Note 25 released with advanced features")
