@@ -66,11 +66,36 @@ High-risk articles trigger Discord alerts with a summary and reason.
 ## Tech Stack 
 
 - Python, Flask, Requests
-
 - OpenAI GPT-4 for classification
-
 - LlamaIndex for vector embeddings
-
 - Newspaper3k for article parsing
-
 - Discord Webhooks for alerts
+
+## How it works
+```pgsql
+
+         +----------------+
+         | New Article     |
+         | (URL or Text)  |
+         +--------+-------+
+                  |
+                  v
+       +----------------------+
+       | Article Parsing      |
+       | (Newspaper3k)        |
+       +----------------------+
+                  |
+                  v
+       +----------------------+
+       | AI Risk Classification|
+       | (GPT-4 via LlamaIndex)|
+       +----------------------+
+                  |
+        +---------+---------+
+        |                   |
+        v                   v
++----------------+   +------------------+
+| Low/Medium Risk|   | High-Risk Alert  |
+| Store or Log   |   | Discord Notification|
++----------------+   +------------------+
+```
