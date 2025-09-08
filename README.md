@@ -23,3 +23,17 @@ The **AI Risk Monitoring Agent** is a real-time solution that scans articles and
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/your-repo-name.git
+
+   git clone https://github.com/your-username/ai-risk-monitoring-agent.git
+``` cd ai-risk-monitoring-agent
+
+  python -m venv venv
+  source venv/bin/activate  # Linux/Mac
+  venv\Scripts\activate     # Windows
+  
+  pip install -r requirements.txt
+  
+  # Add your API keys in a .env file
+  OPENAI_API_KEY=your_openai_api_key
+  DISCORD_WEBHOOK_URL=your_discord_webhook
+
