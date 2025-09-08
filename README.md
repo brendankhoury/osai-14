@@ -18,51 +18,7 @@ The **AI Risk Monitoring Agent** is a real-time solution that scans articles and
   
 - **Customizable Risk Criteria**: Adjust the criteria that define what constitutes high, medium, or low risk to match your specific business needs.
 
-## Installation
-   ```bash
-   git clone https://github.com/your-repo-name.git
 
-   git clone https://github.com/your-username/ai-risk-monitoring-agent.git
-
-   cd ai-risk-monitoring-agent
-  
-   python -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   venv\Scripts\activate     # Windows
-    
-   pip install -r requirements.txt
-    
-   # Add your API keys in a .env file
-   OPENAI_API_KEY=your_openai_api_key
-   DISCORD_WEBHOOK_URL=your_discord_webhook
-
-  ```
-
-## Usage 
- - Monitor Articles by URL
-``` bash
-POST /check_article_url
-{
-  "url": "https://www.example.com/news-article"
-}
-```
- - Monitor Raw Text
-```bash
-   POST /check_article
-{
-  "article": "Article text here..."
-}
-```
-High-risk articles trigger Discord alerts with a summary and reason.
-
-## Example Output 
-```
-{
-  "classification": "High-Risk",
-  "summary": "The article discusses Samsung phone battery explosions and the company's inadequate response.",
-  "reason": "Potential damage to reputation and negative public opinion."
-}
-```
 ## Tech Stack 
 
 - Python, Flask, Requests
@@ -99,3 +55,50 @@ High-risk articles trigger Discord alerts with a summary and reason.
 | Store or Log   |   | Discord Notification|
 +----------------+   +------------------+
 ```
+
+## Usage 
+ - Monitor Articles by URL
+``` bash
+POST /check_article_url
+{
+  "url": "https://www.example.com/news-article"
+}
+```
+ - Monitor Raw Text
+```bash
+   POST /check_article
+{
+  "article": "Article text here..."
+}
+```
+High-risk articles trigger Discord alerts with a summary and reason.
+
+## Example Output 
+```
+{
+  "classification": "High-Risk",
+  "summary": "The article discusses Samsung phone battery explosions and the company's inadequate response.",
+  "reason": "Potential damage to reputation and negative public opinion."
+}
+```
+
+## Installation
+   ```bash
+   git clone https://github.com/your-repo-name.git
+
+   git clone https://github.com/your-username/ai-risk-monitoring-agent.git
+
+   cd ai-risk-monitoring-agent
+  
+   python -m venv venv
+   source venv/bin/activate  # Linux/Mac
+   venv\Scripts\activate     # Windows
+    
+   pip install -r requirements.txt
+    
+   # Add your API keys in a .env file
+   OPENAI_API_KEY=your_openai_api_key
+   DISCORD_WEBHOOK_URL=your_discord_webhook
+
+  ```
+
